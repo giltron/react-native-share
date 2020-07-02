@@ -73,7 +73,11 @@ class ShareSheet extends React.Component<Props> {
         <View style={[styles.actionSheetContainer, overlayStyle]}>
           <TouchableOpacity style={shareSheetStyle} onPress={this.props.onCancel} />
           <Sheet visible={this.props.visible}>
-            <View style={[styles.buttonContainer, style]}>{this.props.children}</View>
+            <View style={[styles.buttonContainer, style]}>{this.props.children}
+            </View>
+            <View>
+              <Text>Save File</Text>
+            </View>
           </Sheet>
         </View>
       </Overlay>
