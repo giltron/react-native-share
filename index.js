@@ -59,6 +59,11 @@ class ShareSheet extends React.Component<Props> {
     BackHandler.removeEventListener('backPress', this.backButtonHandler);
   }
 
+
+  fileButtonHandler() {
+
+  }
+
   backButtonHandler() {
     if (this.props.visible) {
       this.props.onCancel();
@@ -74,9 +79,9 @@ class ShareSheet extends React.Component<Props> {
           <TouchableOpacity style={shareSheetStyle} onPress={this.props.onCancel} />
           <Sheet visible={this.props.visible}>
             <View style={[styles.buttonContainer, style]}>{this.props.children}
+              <Button onPress={this.fileButtonHandler.bind(this)} children={'Save File'} iconSrc='../assets/icons/folder-icon'></Button>
             </View>
             <View>
-              <Text>Save File</Text>
             </View>
           </Sheet>
         </View>
