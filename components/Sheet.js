@@ -30,7 +30,7 @@ export default class extends React.Component<Props, State> {
 
   render() {
     return (
-      <Animated.View style={{ bottom: this.state.bottom }}>{this.props.children}</Animated.View>
+        <Animated.View style={{ bottom: this.state.bottom }}><Text>Sheet</Text>{this.props.children}</Animated.View>
     );
   }
 }

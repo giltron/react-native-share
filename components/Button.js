@@ -38,5 +38,6 @@ export default ({ buttonStyle, onPress, iconSrc, textStyle, children }: Props) =
   <TouchableOpacity activeOpacity={0.5} style={[styles.button, buttonStyle]} onPress={onPress}>
     <Image style={styles.icon} source={iconSrc} />
     <Text style={[styles.buttonText, textStyle]}>{children}</Text>
+    <Text>Button</Text>
   </TouchableOpacity>
 );

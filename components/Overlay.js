@@ -57,6 +57,7 @@ class Overlay extends React.Component<Props, State> {
   render() {
     return (
       <Animated.View style={[this.state.overlayStyle, { opacity: this.state.fadeAnim }]}>
+        <Text>Overlay</Text>
         {this.props.children}
       </Animated.View>
     );
