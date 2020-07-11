@@ -16,6 +16,7 @@ import com.facebook.react.bridge.Callback;
 import java.util.HashMap;
 import java.util.Map;
 
+import cl.json.social.GDriveShare;
 import cl.json.social.EmailShare;
 import cl.json.social.OutlookEmailShare;
 import cl.json.social.FacebookShare;
@@ -73,7 +74,8 @@ public class RNShareModule extends ReactContextBaseJavaModule implements Activit
         snapchat,
         sms,
         linkedin,
-        outlook;
+        outlook,
+        gdrive;
 
 
         public static ShareIntent getShareClass(String social, ReactApplicationContext reactContext) {
@@ -107,6 +109,8 @@ public class RNShareModule extends ReactContextBaseJavaModule implements Activit
                     return new SnapChatShare(reactContext);
                 case messenger:
                     return new MessengerShare(reactContext);
+                case gdrive:
+                    return new GDriveShare(reactContext);
                 case linkedin:
                     return new LinkedinShare(reactContext);
                 default:
