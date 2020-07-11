@@ -41,7 +41,7 @@ public class RNShareModule extends ReactContextBaseJavaModule implements Activit
 
     // removed @Override temporarily just to get it working on different versions of RN
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        System.out.println('onActivityResult requestCode:' +requestCode + ' resultCode:' + resultCode);
+        System.out.println("onActivityResult requestCode:" +requestCode + " resultCode:" + resultCode);
         if (requestCode == SHARE_REQUEST_CODE && resultCode == Activity.RESULT_CANCELED) {
             TargetChosenReceiver.sendCallback(true, false, "CANCELED");
         }
@@ -49,7 +49,7 @@ public class RNShareModule extends ReactContextBaseJavaModule implements Activit
 
     // removed @Override temporarily just to get it working on different versions of RN
     public void onActivityResult(Activity activity, int requestCode, int resultCode, Intent data) {
-        System.out.println('onActivityResult2 requestCode:' +requestCode + ' resultCode:' + resultCode);
+        System.out.println("onActivityResult2 requestCode:" +requestCode + " resultCode:" + resultCode);
         onActivityResult(requestCode, resultCode, data);
     }
 
