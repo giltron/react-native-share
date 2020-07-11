@@ -13,7 +13,7 @@ public class GDriveShare extends SingleShareIntent {
     private static final String PACKAGE = "com.google.android.apps.docs";
     private static final String PLAY_STORE_LINK = "market://details?id=com.google.android.apps.docs";
 
-    public GooglePlusShare(ReactApplicationContext reactContext) {
+    public GDriveShare(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
