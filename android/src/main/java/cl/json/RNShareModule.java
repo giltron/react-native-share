@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import cl.json.social.EmailShare;
+import cl.json.social.OutlookEmailShare;
 import cl.json.social.FacebookShare;
 import cl.json.social.FacebookPagesManagerShare;
 import cl.json.social.GenericShare;
@@ -69,7 +70,8 @@ public class RNShareModule extends ReactContextBaseJavaModule implements Activit
         messenger,
         snapchat,
         sms,
-        linkedin;
+        linkedin,
+        outlook;
 
 
         public static ShareIntent getShareClass(String social, ReactApplicationContext reactContext) {
@@ -93,6 +95,8 @@ public class RNShareModule extends ReactContextBaseJavaModule implements Activit
                     return new GooglePlusShare(reactContext);
                 case email:
                     return new EmailShare(reactContext);
+                 case outlook:
+                    return new OutlookEmailShare(reactContext);
                 case pinterest:
                     return new PinterestShare(reactContext);
                 case sms:
