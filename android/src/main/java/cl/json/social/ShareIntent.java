@@ -103,8 +103,14 @@ public abstract class ShareIntent {
         }
 
         if (ShareIntent.hasValidKey("email", options)) {
+            System.out.println('has hasValidKey email');
             this.getIntent().putExtra(Intent.EXTRA_EMAIL, new String[] { options.getString("email") });
         }
+
+           if (ShareIntent.hasValidKey("outlook", options)) {
+                       System.out.println('has hasValidKey outlook');
+                    this.getIntent().putExtra(Intent.EXTRA_EMAIL, new String[] { options.getString("outlook") });
+            }
 
         if (ShareIntent.hasValidKey("title", options)) {
             this.chooserTitle = options.getString("title");
@@ -299,15 +305,18 @@ public abstract class ShareIntent {
     protected void openIntentChooser() throws ActivityNotFoundException {
         Activity activity = this.reactContext.getCurrentActivity();
         if (activity == null) {
+            System.out.println('TargetChosenReceiver is null, openIntentChooser');
             TargetChosenReceiver.sendCallback(false, "Something went wrong");
             return;
         }
         Intent chooser;
         IntentSender intentSender = null;
         if (TargetChosenReceiver.isSupported()) {
+            System.out.println('TargetChosenReceiver.isSupported');
             intentSender = TargetChosenReceiver.getSharingSenderIntent(this.reactContext);
             chooser = Intent.createChooser(this.getIntent(), this.chooserTitle, intentSender);
         } else {
+            System.out.println('TargetChosenReceiver. is no supported');
             chooser = Intent.createChooser(this.getIntent(), this.chooserTitle);
         }
         chooser.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
@@ -329,6 +338,7 @@ public abstract class ShareIntent {
                 activity.startActivityForResult(excludeChooserIntent(this.getIntent(),options), RNShareModule.SHARE_REQUEST_CODE);
             }
         } else {
+            System.out.println('startActivityForResult');
             activity.startActivityForResult(chooser, RNShareModule.SHARE_REQUEST_CODE);
         }
 

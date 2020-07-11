@@ -20,6 +20,7 @@ public class OutlookEmailShare extends SingleShareIntent {
     @Override
     public void open(ReadableMap options) throws ActivityNotFoundException {
         super.open(options);
+        System.out.println('calling open for com.microsoft.office.outlook');
         //  extra params here
         this.openIntentChooser();
     }
