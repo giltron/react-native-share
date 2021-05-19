@@ -16,6 +16,8 @@ import java.io.IOException;
  */
 public class ShareFile {
 
+    public static final int BASE_64_DATA_LENGTH = 5; // `data:`
+    public static final int BASE_64_DATA_OFFSET = 8; // `;base64,`
     private final ReactApplicationContext reactContext;
     private String url;
     private Uri uri;
@@ -54,14 +56,25 @@ public class ShareFile {
     public boolean isFile() {
         return this.isBase64File() || this.isLocalFile();
     }
+
     private boolean isBase64File() {
         String scheme = uri.getScheme();
         if((scheme != null) && uri.getScheme().equals("data")) {
-            this.type = this.uri.getSchemeSpecificPart().substring(0, this.uri.getSchemeSpecificPart().indexOf(";"));
+            StringBuilder type = new StringBuilder();
+            char[] parts = this.uri.toString().substring(BASE_64_DATA_LENGTH).toCharArray();
+            for (char part : parts) {
+                if (part == ';') {
+                    break;
+                }
+                type.append(part);
+            }
+
+            this.type = type.toString();
             return true;
         }
         return false;
     }
+
     private boolean isLocalFile() {
         String scheme = uri.getScheme();
         if((scheme != null) && (uri.getScheme().equals("content") || uri.getScheme().equals("file"))) {
@@ -106,10 +119,10 @@ public class ShareFile {
         String extension = mime.getExtensionFromMimeType(getType());
 
         if(this.isBase64File()) {
-            String encodedImg = this.uri.getSchemeSpecificPart().substring(this.uri.getSchemeSpecificPart().indexOf(";base64,") + 8);
+            String encodedImg = this.uri.toString().substring(BASE_64_DATA_LENGTH + this.type.length() + BASE_64_DATA_OFFSET);
             String filename = this.filename != null ? this.filename : System.nanoTime() + "";
             try {
-                File dir = new File(Environment.getExternalStorageDirectory(), Environment.DIRECTORY_DOWNLOADS );
+                File dir = new File(this.reactContext.getExternalCacheDir(), Environment.DIRECTORY_DOWNLOADS );
                 if (!dir.exists() && !dir.mkdirs()) {
                     throw new IOException("mkdirs failed on " + dir.getAbsolutePath());
                 }

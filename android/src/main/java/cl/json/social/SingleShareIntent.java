@@ -38,6 +38,7 @@ public abstract class SingleShareIntent extends ShareIntent {
                     this.getIntent().setPackage(getPackage());
                 }
                 super.open(options);
+                return; // once we open we don't need to continue
             } else {
                 System.out.println("NOT INSTALLED");
                 String url = "";
@@ -70,35 +71,23 @@ public abstract class SingleShareIntent extends ShareIntent {
                 return;
             }
             if (options != null) {
-                if (ShareIntent.hasValidKey("social", options)) {
-                    String socialType = options.getString("social");
-                    if (socialType.equals("instagramstories")) {
-                        if (ShareIntent.hasValidKey("method", options)) {
-                            String method = options.getString("method");
-                            if (method.equals("shareStickerImage") || method.equals("shareBackgroundAndStickerImage")) {
-                                activity.grantUriPermission("com.instagram.android", this.stickerAsset.getURI(), Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                            }
-                        } else {
-                            throw new java.lang.IllegalArgumentException("instagram share mode is empty");
-                        }
-                    }
-                } else {
-                    throw new java.lang.IllegalArgumentException("social is empty");
+                if (!ShareIntent.hasValidKey("social", options)) {
+                    throw new IllegalArgumentException("social is empty");
                 }
             }
             if (TargetChosenReceiver.isSupported()) {
                 IntentSender sender = TargetChosenReceiver.getSharingSenderIntent(this.reactContext);
                 Intent chooser = Intent.createChooser(this.getIntent(), this.chooserTitle, sender);
-                chooser.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                chooser.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 activity.startActivityForResult(chooser, RNShareModule.SHARE_REQUEST_CODE);
             } else {
                 Intent chooser = Intent.createChooser(this.getIntent(), this.chooserTitle);
-                chooser.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+                chooser.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 activity.startActivityForResult(chooser, RNShareModule.SHARE_REQUEST_CODE);
                 TargetChosenReceiver.sendCallback(true, true, "OK");
             }
         } else {
-            this.getIntent().setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            this.getIntent().addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             this.reactContext.startActivity(this.getIntent());
             TargetChosenReceiver.sendCallback(true, true, this.getIntent().getPackage());
         }

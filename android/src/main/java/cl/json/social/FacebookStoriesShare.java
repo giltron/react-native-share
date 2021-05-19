@@ -3,9 +3,9 @@ package cl.json.social;
 import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import java.io.File;
 import android.os.Environment;
 import android.net.Uri;
+import java.io.File;
 
 import cl.json.ShareFile;
 
@@ -13,23 +13,23 @@ import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReadableMap;
 
 /**
- * Created by Vladimir Stalmakov on 01-06-20.
+ * Created by Kaio Duarte on 23-12-20.
  */
-public class InstagramStoriesShare extends SingleShareIntent {
+public class FacebookStoriesShare extends SingleShareIntent {
 
-    private static final String PACKAGE = "com.instagram.android";
-    private static final String PLAY_STORE_LINK = "https://play.google.com/store/apps/details?id=com.instagram.android";
+    private static final String PACKAGE = "com.facebook.katana";
+    private static final String PLAY_STORE_LINK = "market://details?id=com.facebook.katana";
 
-    public InstagramStoriesShare(ReactApplicationContext reactContext) {
+    public FacebookStoriesShare(ReactApplicationContext reactContext) {
         super(reactContext);
-        this.setIntent(new Intent("com.instagram.share.ADD_TO_STORY"));
+        this.setIntent(new Intent("com.facebook.stories.ADD_TO_STORY"));
     }
 
     @Override
-    public void open(ReadableMap options) throws ActivityNotFoundException {
+    public void open(ReadableMap options) throws ActivityNotFoundException, IllegalArgumentException {
         super.open(options);
         this.shareStory(options);
-        //  extra params here
+        // extra params here
         this.openIntentChooser(options);
     }
 
@@ -49,6 +49,10 @@ public class InstagramStoriesShare extends SingleShareIntent {
     }
 
     private void shareStory(ReadableMap options) {
+        if (!this.hasValidKey("appId", options)) {
+            throw new IllegalArgumentException("appId was not provided.");
+        }
+
         if (!this.hasValidKey("backgroundImage", options) && !this.hasValidKey("backgroundVideo", options)
                 && !this.hasValidKey("stickerImage", options)) {
             throw new IllegalArgumentException("Invalid background or sticker assets provided.");
@@ -61,6 +65,7 @@ public class InstagramStoriesShare extends SingleShareIntent {
             return;
         }
 
+        this.intent.putExtra("com.facebook.platform.extra.APPLICATION_ID", options.getString("appId"));
         this.intent.putExtra("bottom_background_color", "#906df4");
         this.intent.putExtra("top_background_color", "#837DF4");
 
@@ -102,7 +107,7 @@ public class InstagramStoriesShare extends SingleShareIntent {
             }
 
             this.intent.putExtra("interactive_asset_uri", stickerAsset.getURI());
-            activity.grantUriPermission(InstagramStoriesShare.PACKAGE, stickerAsset.getURI(),
+            activity.grantUriPermission("com.facebook.katana", stickerAsset.getURI(),
                     Intent.FLAG_GRANT_READ_URI_PERMISSION);
         }
     }
